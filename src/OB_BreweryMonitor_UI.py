@@ -209,36 +209,45 @@ try:
 	with ui.row():
 		ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 100px")
 		ui.link('Ostentatious Brewing Brewery Monitor', 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style(CSS_HEADING_H1)
-	ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap List")
-	with ui.row():
-		with ui.card():
-			ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
-			ui_tap1_image = ui.image(tap1_image_url).style("width: 250px")
-			ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
-			ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
-			ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
-		with ui.card():
-			ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
-			ui_tap2_image = ui.image(tap2_image_url).style("width: 250px")
-			ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
-			ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
-			ui_tap2_pct_beer = ui.label('CSS').style(CSS_LABEL)
-	with ui.row():
-		with ui.card():
-			ui.label('CSS').style(CSS_HEADING_H2).set_text("Ferm Chamber 1 Temp")		
-			ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)
-		with ui.card():
-			ui.label('CSS').style(CSS_HEADING_H2).set_text("Ferm Chamber 2 Temp")		
-			ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)
-		with ui.card():
-			ui.label('CSS').style(CSS_HEADING_H2).set_text("Kegerator Temp")		
-			ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)
-			
+
+
+	with ui.tabs().classes('w-full') as tabs:
+		one = ui.tab('On Tap')
+		two = ui.tab('Production Monitor')
+	with ui.tab_panels(tabs, value=two).classes('w-full'):
+		with ui.tab_panel(one):
+			ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap List")
+			with ui.row():
+				with ui.card().tight():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
+					ui_tap1_image = ui.image(tap1_image_url).style("width: 250px")
+					ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
+				with ui.card().tight():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
+					ui_tap2_image = ui.image(tap2_image_url).style("width: 250px")
+					ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_tap2_pct_beer = ui.label('CSS').style(CSS_LABEL)
+			with ui.row():				
+				with ui.card():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Kegerator Temp")		
+					ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)
+		with ui.tab_panel(two):		
+			with ui.row():
+				with ui.card():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Ferm Chamber 1 Temp")		
+					ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)
+				with ui.card():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Ferm Chamber 2 Temp")		
+					ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)
+		tabs.set_value('On Tap')
 	
 	# update UI elements on timers
 	ui.timer(1.0, lambda: ui_tap1_pct_beer.set_text(f'{keg_level_1}% Beer Remaining'))
 	ui.timer(1.0, lambda: ui_tap2_pct_beer.set_text(f'{keg_level_2}% Beer Remaining'))
-	ui.timer(15, lambda: update_ui()) 
+	ui.timer(1.0, lambda: update_ui()) 
 
 	ui.timer(1.0, lambda: ui_ferm_chamber_temp_1.set_text(f'{fermentation_chamber_temp_1} C'))
 	ui.timer(1.0, lambda: ui_ferm_chamber_temp_2.set_text(f'{fermentation_chamber_temp_2} C'))
@@ -246,8 +255,8 @@ try:
 
 
 
-	# run the UI
-	ui.run(reload = False, title="Ostentatious Brewing", favicon=FAVICON)
+	# run the UI   192.168.178.74
+	ui.run(reload=False, native=False, title='Ostentatious Brewing', favicon=FAVICON, host='192.168.178.74')
 	
 	# Wait for keyboard input to terminate the thread
 	input("Press Enter to stop the program..\n")
