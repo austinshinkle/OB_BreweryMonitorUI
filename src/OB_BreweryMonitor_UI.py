@@ -66,17 +66,17 @@ def get_sensor_data():
 		
 		# parse dictionary data
 		# dictionary elements: 
-			# FermentationChamberTemp1_C
-			# FermentationChamberTemp2_C
-			# KegeratorTemp_C
+			# FermentationChamberTemp1_F
+			# FermentationChamberTemp2_F
+			# KegeratorTemp_F
 			# KegWeightSensor1_PCT
 			# KegWeightSensor2_PCT
 
 		keg_level_1 = sensor_data["KegWeightSensor1_PCT"]
 		keg_level_2 = sensor_data["KegWeightSensor2_PCT"]
-		fermentation_chamber_temp_1 = sensor_data["FermentationChamberTemp1_C"]
-		fermentation_chamber_temp_2 = sensor_data["FermentationChamberTemp2_C"]
-		kegerator_temp = sensor_data["KegeratorTemp_C"]
+		fermentation_chamber_temp_1 = sensor_data["FermentationChamberTemp1_F"]
+		fermentation_chamber_temp_2 = sensor_data["FermentationChamberTemp2_F"]
+		kegerator_temp = sensor_data["KegeratorTemp_F"]
 
 		client_socket.close()
 
@@ -249,9 +249,9 @@ try:
 	ui.timer(1.0, lambda: ui_tap2_pct_beer.set_text(f'{keg_level_2}% Beer Remaining'))
 	ui.timer(1.0, lambda: update_ui()) 
 
-	ui.timer(1.0, lambda: ui_ferm_chamber_temp_1.set_text(f'{fermentation_chamber_temp_1} C'))
-	ui.timer(1.0, lambda: ui_ferm_chamber_temp_2.set_text(f'{fermentation_chamber_temp_2} C'))
-	ui.timer(1.0, lambda: ui_kegerator_temp.set_text(f'{kegerator_temp} C'))
+	ui.timer(1.0, lambda: ui_ferm_chamber_temp_1.set_text(f'{fermentation_chamber_temp_1} F'))
+	ui.timer(1.0, lambda: ui_ferm_chamber_temp_2.set_text(f'{fermentation_chamber_temp_2} F'))
+	ui.timer(1.0, lambda: ui_kegerator_temp.set_text(f'{kegerator_temp} F'))
 
 
 
