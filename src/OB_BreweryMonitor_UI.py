@@ -14,10 +14,10 @@ server_ip = "ashinkl-rpi4"
 server_port = 12345
 
 # styles for CSS formatting
-CSS_HEADING_H1 = 'color: #111111; font-variant: small-caps; font-size: xxx-large; font-weight: 500; font-family: Andale Mono, monospace'
-CSS_HEADING_H2 = 'color: #222222; font-variant: small-caps; font-size: xx-large; font-weight: 500; font-family: Andale Mono, monospace'
-CSS_LABEL = 'color: #333333; font-variant: small-caps; font-size: x-large; font-family: Andale Mono, monospace'
-CSS_LABEL_SMALL = 'color: #333333; font-variant: small-caps; font-size: medium; font-family: Andale Mono, monospace'
+CSS_HEADING_H1 = 'margin: auto; padding: 0px; color: #111111; font-variant: small-caps; font-size: xxx-large; font-weight: 500; font-family: Optima, sans-serif'
+CSS_HEADING_H2 = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: xx-large; font-weight: 500; font-family: Optima, sans-serif'
+CSS_LABEL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: x-large; font-family: Optima, sans-serif'
+CSS_LABEL_SMALL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: medium; font-family: Optima, sans-serif'
 
 FAVICON = '../media/favicon-32x32.png'
 
@@ -204,44 +204,59 @@ try:
 	
 	### FIX THIS LATER!!!! (not a good implementation)
 #	sleep(5)
-	
-	# setup up the UI for the web page
-	with ui.row():
-		ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 100px")
-		ui.link('Ostentatious Brewing Brewery Monitor', 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style(CSS_HEADING_H1)
 
+
+	# setup up the UI for the web page
+	ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 250px; margin: auto")
+#	ui.link('Ostentatious Brewing', 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style(CSS_HEADING_H1)
+	ui.label('CSS').style(CSS_HEADING_H1).set_text("Ostentatious Brewing")
 
 	with ui.tabs().classes('w-full') as tabs:
 		one = ui.tab('On Tap')
 		two = ui.tab('Production Monitor')
 	with ui.tab_panels(tabs, value=two).classes('w-full'):
 		with ui.tab_panel(one):
-			ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap List")
-			with ui.row():
-				with ui.card().tight():
+			with ui.row().style("margin: auto"):
+				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
-					ui_tap1_image = ui.image(tap1_image_url).style("width: 250px")
-					ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
-					ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_tap1_image = ui.image(tap1_image_url).style("width: 300px")
+					ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")	
+					
+					with ui.grid(columns=2).style("margin: auto"):
+						ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+						
 					ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
-				with ui.card().tight():
+					
+				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
-					ui_tap2_image = ui.image(tap2_image_url).style("width: 250px")
-					ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
-					ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_tap2_image = ui.image(tap2_image_url).style("width: 300px")
+					ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")		
+					
+					with ui.grid(columns=2).style("margin: auto"):
+						ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+					
 					ui_tap2_pct_beer = ui.label('CSS').style(CSS_LABEL)
-			with ui.row():				
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Kegerator Temp")		
-					ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)
+					
+			with ui.row().style("margin: auto"):				
+				with ui.card().style("width: 500px"):
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Kegerator")						
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")	
+					ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)			
+						
+		
 		with ui.tab_panel(two):		
-			with ui.row():
+			with ui.row().style("margin: auto"):
 				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Ferm Chamber 1 Temp")		
-					ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")	
+					ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)	
 				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Ferm Chamber 2 Temp")		
-					ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")		
+					ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)				
+					
 		tabs.set_value('On Tap')
 	
 	# update UI elements on timers
