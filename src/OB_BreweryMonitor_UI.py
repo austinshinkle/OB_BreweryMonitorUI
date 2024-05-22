@@ -14,7 +14,7 @@ server_ip = "ashinkl-rpi4"
 server_port = 12345
 
 # styles for CSS formatting
-CSS_HEADING_H1 = 'margin: auto; padding: 0px; color: #111111; font-variant: small-caps; font-size: xxx-large; font-weight: 500; font-family: Optima, sans-serif'
+CSS_HEADING_H1 = 'margin: auto; padding: 0px; text-align: center; color: #111111; font-variant: small-caps; font-size: xxx-large; font-weight: 500; font-family: Optima, sans-serif'
 CSS_HEADING_H2 = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: xx-large; font-weight: 500; font-family: Optima, sans-serif'
 CSS_LABEL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: x-large; font-family: Optima, sans-serif'
 CSS_LABEL_SMALL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: medium; font-family: Optima, sans-serif'
@@ -177,7 +177,11 @@ def get_on_tap_info():
 		except:
 			print("Could not connect to the server...will try again later")
 				
-		sleep(60);
+		#HACK!!! only for debugging (you should probably switch this to a wait)
+		x = 1
+		while not terminate_thread and x < 60:
+			x += 1
+			sleep(1);
 
 # function run on a timer to update the NiceGui
 # colection of calls that don't fit in a single lambda call
@@ -207,7 +211,8 @@ try:
 
 
 	# setup up the UI for the web page
-	ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 250px; margin: auto")
+	with ui.link(target='https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style("margin: auto"):
+		ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 250px; margin: auto")
 #	ui.link('Ostentatious Brewing', 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style(CSS_HEADING_H1)
 	ui.label('CSS').style(CSS_HEADING_H1).set_text("Ostentatious Brewing")
 
@@ -216,31 +221,31 @@ try:
 		two = ui.tab('Production Monitor')
 	with ui.tab_panels(tabs, value=two).classes('w-full'):
 		with ui.tab_panel(one):
-			with ui.row().style("margin: auto"):
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
-					ui_tap1_image = ui.image(tap1_image_url).style("width: 300px")
-					ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")	
-					
-					with ui.grid(columns=2).style("margin: auto"):
-						ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
-						ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+			with ui.column().style("margin: auto"):
+				with ui.row().style("margin: auto"):
+					with ui.card().style("margin: auto"):
+						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
+						ui_tap1_image = ui.image(tap1_image_url).style("width: 300px")
+						ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")	
 						
-					ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
-					
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
-					ui_tap2_image = ui.image(tap2_image_url).style("width: 300px")
-					ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")		
-					
-					with ui.grid(columns=2).style("margin: auto"):
-						ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
-						ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
-					
-					ui_tap2_pct_beer = ui.label('CSS').style(CSS_LABEL)
-					
-			with ui.row().style("margin: auto"):				
-				with ui.card().style("width: 500px"):
+						with ui.grid(columns=2).style("margin: auto"):
+							ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
+							ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+							
+						ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
+						
+					with ui.card().style("margin: auto"):
+						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
+						ui_tap2_image = ui.image(tap2_image_url).style("width: 300px")
+						ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")		
+						
+						with ui.grid(columns=2).style("margin: auto"):
+							ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
+							ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
+						
+						ui_tap2_pct_beer = ui.label('CSS').style(CSS_LABEL)
+									
+				with ui.card().style("width: 100%"):
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Kegerator")						
 					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")	
 					ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)			
