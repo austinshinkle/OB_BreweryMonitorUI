@@ -36,11 +36,13 @@ tap1_abv = ''
 tap1_ibu = ''
 tap1_image_url = ''
 tap1_page_url = ''
+tap1_style = ''
 tap2_beer_name = ''
 tap2_abv = ''
 tap2_ibu = ''
 tap2_image_url = ''
 tap2_page_url = ''
+tap2_style = ''
 
 
 # function that gets the values of the data
