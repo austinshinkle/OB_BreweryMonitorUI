@@ -16,6 +16,7 @@ server_port = 12345
 # styles for CSS formatting
 CSS_HEADING_H1 = 'margin: auto; padding: 0px; text-align: center; color: #111111; font-variant: small-caps; font-size: xxx-large; font-weight: 500; font-family: Optima, sans-serif'
 CSS_HEADING_H2 = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: xx-large; font-weight: 500; font-family: Optima, sans-serif'
+CSS_HEADING_H3 = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: x-large; font-weight: 500; font-family: Optima, sans-serif'
 CSS_LABEL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: x-large; font-family: Optima, sans-serif'
 CSS_LABEL_SMALL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: medium; font-family: Optima, sans-serif'
 
@@ -34,10 +35,12 @@ tap1_beer_name = ''
 tap1_abv = ''
 tap1_ibu = ''
 tap1_image_url = ''
+tap1_page_url = ''
 tap2_beer_name = ''
 tap2_abv = ''
 tap2_ibu = ''
 tap2_image_url = ''
+tap2_page_url = ''
 
 
 # function that gets the values of the data
@@ -90,11 +93,15 @@ def get_on_tap_info():
 	global tap1_beer_name
 	global tap1_abv
 	global tap1_ibu
-	global tap1_image_url
+	global tap1_style
+	global tap1_image_url	
+	global tap1_page_url
 	global tap2_beer_name
 	global tap2_abv
 	global tap2_ibu
+	global tap2_style
 	global tap2_image_url
+	global tap2_page_url
 	
 	global ui_ferm_chamber_temp_1
 	global ui_ferm_chamber_temp_2
@@ -112,6 +119,7 @@ def get_on_tap_info():
 	# Wix API endpoint for getting collection items and base image URL
 	query_endpoint = 'https://www.wixapis.com/wix-data/v2/items/query'
 	image_base_url = 'https://static.wixstatic.com/media/'
+	website_base_url = 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing'
 	
 	# CMS database to query
 	query_data = {
@@ -152,6 +160,9 @@ def get_on_tap_info():
 						tap1_beer_name = data['dataItems'][num]['data']['title']            
 						tap1_abv = data['dataItems'][num]['data']['actualAbv']
 						tap1_ibu = data['dataItems'][num]['data']['calculatedIbu']
+						tap1_style = data['dataItems'][num]['data']['style']
+						tap1_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
+						#print(data['dataItems'][num]['data'])
 						
 						# get the image string and split the string by "/" and then put the full url together
 						parts = data['dataItems'][num]['data']['image'].split("/")
@@ -164,6 +175,8 @@ def get_on_tap_info():
 						tap2_beer_name = data['dataItems'][num]['data']['title']            
 						tap2_abv = data['dataItems'][num]['data']['actualAbv']
 						tap2_ibu = data['dataItems'][num]['data']['calculatedIbu']
+						tap2_style = data['dataItems'][num]['data']['style']
+						tap2_page_url = 'target=' + website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
 						
 						# get the image string and split the string by "/" and then put the full url together
 						parts = data['dataItems'][num]['data']['image'].split("/")
@@ -190,10 +203,12 @@ def update_ui():
 	# update all the variables from global variables
 	ui_tap1_image.set_source(tap1_image_url)
 	ui_tap1_abv.set_text(f"{tap1_abv} ABV")
-	ui_tap1_ibu.set_text(f"{tap1_ibu} IBU")
+	ui_tap1_ibu.set_text(f"{tap1_ibu} IBU")	
 	ui_tap2_image.set_source(tap2_image_url) 
 	ui_tap2_abv.set_text(f"{tap2_abv} ABV") 
-	ui_tap2_ibu.set_text(f"{tap2_ibu} IBU") 
+	ui_tap2_ibu.set_text(f"{tap2_ibu} IBU")
+	ui_tap1_style.set_text(tap1_style)
+	ui_tap2_style.set_text(tap2_style)
 	
 # main program
 try:
@@ -205,15 +220,10 @@ try:
 	# start the thread to query the web site for new data
 	thread_get_on_tap_info = threading.Thread(target=get_on_tap_info)
 	thread_get_on_tap_info.start()
-	
-	### FIX THIS LATER!!!! (not a good implementation)
-#	sleep(5)
-
 
 	# setup up the UI for the web page
 	with ui.link(target='https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style("margin: auto"):
 		ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 250px; margin: auto")
-#	ui.link('Ostentatious Brewing', 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing', new_tab=True).style(CSS_HEADING_H1)
 	ui.label('CSS').style(CSS_HEADING_H1).set_text("Ostentatious Brewing")
 
 	with ui.tabs().classes('w-full') as tabs:
@@ -225,7 +235,9 @@ try:
 				with ui.row().style("margin: auto"):
 					with ui.card().style("margin: auto"):
 						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
-						ui_tap1_image = ui.image(tap1_image_url).style("width: 300px")
+						with ui.link(target=tap1_page_url, new_tab=True).style("margin: auto"):
+							ui_tap1_image = ui.image(tap1_image_url).style("width: 300px;")
+						ui_tap1_style = ui.label('CSS').style(CSS_HEADING_H3)
 						ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")	
 						
 						with ui.grid(columns=2).style("margin: auto"):
@@ -236,7 +248,9 @@ try:
 						
 					with ui.card().style("margin: auto"):
 						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
-						ui_tap2_image = ui.image(tap2_image_url).style("width: 300px")
+						with ui.link(tap2_page_url, new_tab=True).style("margin: auto"): 
+							ui_tap2_image = ui.image(tap2_image_url).style("width: 300px;")
+						ui_tap2_style = ui.label('CSS').style(CSS_HEADING_H3)
 						ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")		
 						
 						with ui.grid(columns=2).style("margin: auto"):
