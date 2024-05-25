@@ -9,6 +9,9 @@ from nicegui import run, ui, app
 import requests
 import json
 
+# debugging 2= MAX; 1 = MIN; 0 = OFF
+DEBUG = 1
+
 # socket connection information
 server_ip = "ashinkl-rpi4"
 server_port = 12345
@@ -59,15 +62,21 @@ def get_sensor_data():
 	
 	while not terminate_thread:
 		
+		# connect to the server which has the data
 		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		client_socket.connect((server_ip,server_port))
 
+		# get the data from the socket
 		data = client_socket.recv(1024)
-		print("Received from server:", data.decode())
+		
+		if DEBUG > 0:
+			print("Received from server:", data.decode())
 		
 		# get sensor data from server
 		sensor_data = json.loads(data.decode())
-		print(sensor_data)
+		
+		if DEBUG > 0:
+			print(sensor_data)
 		
 		# parse dictionary data
 		# dictionary elements: 
@@ -141,10 +150,12 @@ def get_on_tap_info():
 		try:
 			# send the HTTP query
 			response = requests.post(query_endpoint, headers=headers, params=query_data)
-			print("Getting HTTP data from Ostentatious Brewing!")
+			print("Connecting to Ostentatious Brewing...")
 
 			# check if the request was successful (status code 200)
 			if response.status_code == 200:
+				
+				print("SUCCESS!")
 				
 				# Parse the JSON response
 				data = response.json()
@@ -152,26 +163,29 @@ def get_on_tap_info():
 				# determine how many elements exist
 				element_count = data['pagingMetadata']['count']
 				
+				if DEBUG == 2:
+					print(data['dataItems'])
+				
 				# access the parsed data (as a Python dictionary)
 				num = 0
 				while num < element_count:
 					
 					#find information for Tap 1
-					if data['dataItems'][num]['data']['onTap'] == 'Tap1':
+					if data['dataItems'][num]['data']['onTap'] == 'OnTap_Tap1':
 
 						tap1_beer_name = data['dataItems'][num]['data']['title']            
 						tap1_abv = data['dataItems'][num]['data']['actualAbv']
 						tap1_ibu = data['dataItems'][num]['data']['calculatedIbu']
 						tap1_style = data['dataItems'][num]['data']['style']
 						tap1_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
-						#print(data['dataItems'][num]['data'])
+
 						
 						# get the image string and split the string by "/" and then put the full url together
 						parts = data['dataItems'][num]['data']['image'].split("/")
 						tap1_image_url = image_base_url + parts[3]
 						
 					#find information for Tap 2	
-					if data['dataItems'][num]['data']['onTap'] == 'Tap2':
+					if data['dataItems'][num]['data']['onTap'] == 'OnTap_Tap2':
 
 						#find information for Tap 2
 						tap2_beer_name = data['dataItems'][num]['data']['title']            
@@ -203,14 +217,20 @@ def get_on_tap_info():
 def update_ui():
 
 	# update all the variables from global variables
+	
+	# On Tap - Tap 1
 	ui_tap1_image.set_source(tap1_image_url)
 	ui_tap1_abv.set_text(f"{tap1_abv} ABV")
-	ui_tap1_ibu.set_text(f"{tap1_ibu} IBU")	
+	ui_tap1_ibu.set_text(f"{tap1_ibu} IBU")		
+	ui_tap1_style.set_text(tap1_style)
+	ui_tap1_beer_name.set_text(tap1_beer_name)
+	
+	# On Tap - Tap 2		
 	ui_tap2_image.set_source(tap2_image_url) 
 	ui_tap2_abv.set_text(f"{tap2_abv} ABV") 
 	ui_tap2_ibu.set_text(f"{tap2_ibu} IBU")
-	ui_tap1_style.set_text(tap1_style)
 	ui_tap2_style.set_text(tap2_style)
+	ui_tap2_beer_name.set_text(tap2_beer_name)
 	
 # main program
 try:
@@ -228,51 +248,63 @@ try:
 		ui.image('../media/Ostentatious Brewing - Robot 2.jpeg').style("width: 250px; margin: auto")
 	ui.label('CSS').style(CSS_HEADING_H1).set_text("Ostentatious Brewing")
 
+	# create the overall page with two tabs
 	with ui.tabs().classes('w-full') as tabs:
 		one = ui.tab('On Tap')
 		two = ui.tab('Production Monitor')
 	with ui.tab_panels(tabs, value=two).classes('w-full'):
+		# On Tap tab
 		with ui.tab_panel(one):
 			with ui.column().style("margin: auto"):
 				with ui.row().style("margin: auto"):
+					# create the card for the first beer on tap
 					with ui.card().style("margin: auto"):
 						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
+						# add the beer image and style
+						ui_tap1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
 						with ui.link(target=tap1_page_url, new_tab=True).style("margin: auto"):
 							ui_tap1_image = ui.image(tap1_image_url).style("width: 300px;")
-						ui_tap1_style = ui.label('CSS').style(CSS_HEADING_H3)
-						ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")	
+						ui_tap1_style = ui.label('CSS').style(CSS_HEADING_H3)	
 						
+						# show beer statistics
 						with ui.grid(columns=2).style("margin: auto"):
 							ui_tap1_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
 							ui_tap1_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
-							
-						ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
 						
+						# show the remaining beer	
+						ui_tap1_pct_beer = ui.label('CSS').style(CSS_LABEL)
+					
+					# create the card for the second beer on tap	
 					with ui.card().style("margin: auto"):
 						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
+						# add the beer image and style
+						ui_tap2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
 						with ui.link(tap2_page_url, new_tab=True).style("margin: auto"): 
 							ui_tap2_image = ui.image(tap2_image_url).style("width: 300px;")
 						ui_tap2_style = ui.label('CSS').style(CSS_HEADING_H3)
-						ui.label('CSS').style(CSS_LABEL).set_text("Beer Statistics")		
 						
+						# show beer statistics
 						with ui.grid(columns=2).style("margin: auto"):
 							ui_tap2_abv = ui.label('CSS').style(CSS_LABEL_SMALL)
 							ui_tap2_ibu = ui.label('CSS').style(CSS_LABEL_SMALL)
-						
+						# show the remaining beer	
 						ui_tap2_pct_beer = ui.label('CSS').style(CSS_LABEL)
-									
+				
+				# show the kegerator temperature						
 				with ui.card().style("width: 100%"):
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Kegerator")						
 					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")	
 					ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)			
 						
-		
+		# In Production tab
 		with ui.tab_panel(two):		
 			with ui.row().style("margin: auto"):
+				# show fermentation chamber 1 temperature
 				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
 					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")	
 					ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)	
+				# show fermentation chamber 2 temperature
 				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
 					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")		
