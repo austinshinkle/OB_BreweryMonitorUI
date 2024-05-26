@@ -10,7 +10,7 @@ import requests
 import json
 
 # debugging 2= MAX; 1 = MIN; 0 = OFF
-DEBUG = 1
+DEBUG = 2
 
 # socket connection information
 server_ip = "ashinkl-rpi4"
@@ -269,9 +269,9 @@ def get_on_tap_info():
 					if data['dataItems'][num]['data']['onTap'] == 'FermChamber1':
 
 						ferm_chamber_1_beer_name = data['dataItems'][num]['data']['title']            
-						ferm_chamber_1_expected_OG = data['dataItems'][num]['data']['expectedOg']
+						ferm_chamber_1_expected_OG = data['dataItems'][num]['data']['targetOg']
 						ferm_chamber_1_actual_OG = data['dataItems'][num]['data']['actualOg']
-						ferm_chamber_1_expected_FG = data['dataItems'][num]['data']['expectedFg']
+						ferm_chamber_1_expected_FG = data['dataItems'][num]['data']['targetFg']
 						#ferm_chamber_1_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
 
 						
@@ -283,9 +283,9 @@ def get_on_tap_info():
 					if data['dataItems'][num]['data']['onTap'] == 'FermChamber2':
 
 						ferm_chamber_2_beer_name = data['dataItems'][num]['data']['title']            
-						ferm_chamber_2_expected_OG = data['dataItems'][num]['data']['expectedOg']
+						ferm_chamber_2_expected_OG = data['dataItems'][num]['data']['targetOg']
 						ferm_chamber_2_actual_OG = data['dataItems'][num]['data']['actualOg']
-						ferm_chamber_2_expected_FG = data['dataItems'][num]['data']['expectedFg']
+						ferm_chamber_2_expected_FG = data['dataItems'][num]['data']['targetFg']
 						#ferm_chamber_2_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
 
 						
@@ -326,6 +326,21 @@ def update_ui():
 	ui_tap2_ibu.set_text(f"{tap2_ibu} IBU")
 	ui_tap2_style.set_text(tap2_style)
 	ui_tap2_beer_name.set_text(tap2_beer_name)
+	
+	# In Prod - Fermentation Chamber 1
+	ui_ferm_chamber_1_beer_name.set_text(ferm_chamber_1_beer_name)
+	ui_ferm_chamber_1_image.set_source(ferm_chamber_1_image_url)
+	ui_ferm_chamber_1_expected_OG.set_text(f"Expected OG: {ferm_chamber_1_expected_OG}")
+	ui_ferm_chamber_1_expected_FG.set_text(f"Expected FG: {ferm_chamber_1_expected_FG}")
+	ui_ferm_chamber_1_actual_OG.set_text(f"Actual OG: {ferm_chamber_1_actual_OG}")
+	
+	# In Prod - Fermentation Chamber 2
+	ui_ferm_chamber_2_beer_name.set_text(ferm_chamber_2_beer_name)
+	ui_ferm_chamber_2_image.set_source(ferm_chamber_2_image_url)
+	ui_ferm_chamber_2_expected_OG.set_text(f"Expected OG: {ferm_chamber_2_expected_OG}")
+	ui_ferm_chamber_2_expected_FG.set_text(f"Expected FG: {ferm_chamber_2_expected_FG}")
+	ui_ferm_chamber_2_actual_OG.set_text(f"Actual OG: {ferm_chamber_2_actual_OG}")
+
 	
 # main program
 try:
@@ -392,8 +407,35 @@ try:
 					ui_kegerator_temp = ui.label('CSS').style(CSS_LABEL)			
 						
 		# In Production tab
-		with ui.tab_panel(two):		
-			with ui.row().style("margin: auto"):
+		with ui.tab_panel(two):
+			with ui.grid(columns=2).style("margin: auto"):		
+				
+				# create the card for the first beer in production
+				with ui.card().style("margin: auto"):
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")
+					# add the beer image and style
+					ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+					ui_ferm_chamber_1_image = ui.image(ferm_chamber_1_image_url).style("margin: auto; width: 300px;")
+					
+					# show gravity numbers
+					with ui.grid(columns=2).style("margin: auto"):
+						ui_ferm_chamber_1_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_ferm_chamber_1_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)
+					ui_ferm_chamber_1_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+				
+				# create the card for the second beer in production	
+				with ui.card().style("margin: auto"):
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")
+					# add the beer image and style
+					ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+					ui_ferm_chamber_2_image = ui.image(ferm_chamber_2_image_url).style("margin: auto; width: 300px;")
+					
+					# show gravity numbers
+					with ui.grid(columns=2).style("margin: auto"):
+						ui_ferm_chamber_2_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_ferm_chamber_2_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)	
+					ui_ferm_chamber_2_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+
 				# show fermentation chamber 1 temperature
 				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
@@ -404,7 +446,7 @@ try:
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
 					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")		
 					ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)				
-					
+						
 		tabs.set_value('On Tap')
 	
 	# update UI elements on timers
