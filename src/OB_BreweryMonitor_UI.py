@@ -10,7 +10,7 @@ import requests
 import json
 
 # debugging 2= MAX; 1 = MIN; 0 = OFF
-DEBUG = 2
+DEBUG = 1
 
 # socket connection information
 server_ip = "ashinkl-rpi4"
