@@ -34,18 +34,35 @@ fermentation_chamber_temp_2 = 0
 kegerator_temp = 0
 
 # global variables for web site api calls
+# On Tap - Tap 1
 tap1_beer_name = ''
 tap1_abv = ''
 tap1_ibu = ''
 tap1_image_url = ''
 tap1_page_url = ''
 tap1_style = ''
+
+# On Tap - Tap 2
 tap2_beer_name = ''
 tap2_abv = ''
 tap2_ibu = ''
 tap2_image_url = ''
 tap2_page_url = ''
 tap2_style = ''
+
+# In Production - Fermentation Chamber 1
+ferm_chamber_1_beer_name = ''
+ferm_chamber_1_image_url = ''
+ferm_chamber_1_expected_OG = ''
+ferm_chamber_1_actual_OG = ''
+ferm_chamber_1_expected_FG = ''
+
+# In Production - Fermentation Chamber 2
+ferm_chamber_2_beer_name = ''
+ferm_chamber_2_image_url = ''
+ferm_chamber_2_expected_OG = ''
+ferm_chamber_2_actual_OG = ''
+ferm_chamber_2_expected_FG = ''
 
 
 # function that gets the values of the data
@@ -101,6 +118,7 @@ def get_sensor_data():
 # designed to be run in a thread	
 def get_on_tap_info():
 	
+	# varaiables for On Tap info
 	global tap1_beer_name
 	global tap1_abv
 	global tap1_ibu
@@ -114,6 +132,19 @@ def get_on_tap_info():
 	global tap2_image_url
 	global tap2_page_url
 	
+	# variable for In Production info
+	global ferm_chamber_1_beer_name
+	global ferm_chamber_1_image_url
+	global ferm_chamber_1_expected_OG
+	global ferm_chamber_1_actual_OG
+	global ferm_chamber_1_expected_FG
+	global ferm_chamber_2_beer_name
+	global ferm_chamber_2_image_url
+	global ferm_chamber_2_expected_OG
+	global ferm_chamber_2_actual_OG
+	global ferm_chamber_2_expected_FG
+
+	# variables for sensors
 	global ui_ferm_chamber_temp_1
 	global ui_ferm_chamber_temp_2
 	global ui_kegerator_temp
@@ -133,8 +164,11 @@ def get_on_tap_info():
 	website_base_url = 'https://ostentatiousbrewing.wixsite.com/ostentatiousbrewing'
 	
 	# CMS database to query
-	query_data = {
+	query_data_on_tap = {
 	  "dataCollectionId": "BeerRecipes"
+	}
+	query_data_in_production = {
+	  "dataCollectionId": "BeerRecipesOnTap" # NEED TO CHANGE THIS API NAME!!!
 	}
 
 	# define the header
@@ -147,10 +181,11 @@ def get_on_tap_info():
 
 	while not terminate_thread:
 	
+		# get On Tap data
 		try:
 			# send the HTTP query
-			response = requests.post(query_endpoint, headers=headers, params=query_data)
-			print("Connecting to Ostentatious Brewing...")
+			response = requests.post(query_endpoint, headers=headers, params=query_data_on_tap)
+			print("Connecting to Ostentatious Brewing:  Getting On Tap Data...")
 
 			# check if the request was successful (status code 200)
 			if response.status_code == 200:
@@ -184,7 +219,7 @@ def get_on_tap_info():
 						parts = data['dataItems'][num]['data']['image'].split("/")
 						tap1_image_url = image_base_url + parts[3]
 						
-					#find information for Tap 2	
+					#find information for Tap 2	Connecting to Ostentatious Brewing: Getting In Production Data...
 					if data['dataItems'][num]['data']['onTap'] == 'OnTap_Tap2':
 
 						#find information for Tap 2
@@ -197,6 +232,66 @@ def get_on_tap_info():
 						# get the image string and split the string by "/" and then put the full url together
 						parts = data['dataItems'][num]['data']['image'].split("/")
 						tap2_image_url = image_base_url + parts[3]
+						
+					num += 1
+					
+			else:
+				print(f'Error: {response.status_code}')
+		
+		except:
+			print("Could not connect to the server...will try again later")
+			
+		# get In Production data
+		try:
+			# send the HTTP query
+			response = requests.post(query_endpoint, headers=headers, params=query_data_in_production)
+			print("Connecting to Ostentatious Brewing: Getting In Production Data...")
+
+			# check if the request was successful (status code 200)
+			if response.status_code == 200:
+				
+				print("SUCCESS!")
+				
+				# Parse the JSON response
+				data = response.json()
+				
+				# determine how many elements exist
+				element_count = data['pagingMetadata']['count']
+				
+				if DEBUG == 2:
+					print(data['dataItems'])
+				
+				# access the parsed data (as a Python dictionary)
+				num = 0
+				while num < element_count:
+					
+					#find information for Fermentation Chamber 1
+					if data['dataItems'][num]['data']['onTap'] == 'FermChamber1':
+
+						ferm_chamber_1_beer_name = data['dataItems'][num]['data']['title']            
+						ferm_chamber_1_expected_OG = data['dataItems'][num]['data']['expectedOg']
+						ferm_chamber_1_actual_OG = data['dataItems'][num]['data']['actualOg']
+						ferm_chamber_1_expected_FG = data['dataItems'][num]['data']['expectedFg']
+						#ferm_chamber_1_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
+
+						
+						# get the image string and split the string by "/" and then put the full url together
+						parts = data['dataItems'][num]['data']['image'].split("/")
+						ferm_chamber_1_image_url = image_base_url + parts[3]
+						
+					#find information for Fermentation Chamber 2
+					if data['dataItems'][num]['data']['onTap'] == 'FermChamber2':
+
+						ferm_chamber_2_beer_name = data['dataItems'][num]['data']['title']            
+						ferm_chamber_2_expected_OG = data['dataItems'][num]['data']['expectedOg']
+						ferm_chamber_2_actual_OG = data['dataItems'][num]['data']['actualOg']
+						ferm_chamber_2_expected_FG = data['dataItems'][num]['data']['expectedFg']
+						#ferm_chamber_2_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
+
+						
+						# get the image string and split the string by "/" and then put the full url together
+						parts = data['dataItems'][num]['data']['image'].split("/")
+						ferm_chamber_2_image_url = image_base_url + parts[3]
 						
 					num += 1
 					
