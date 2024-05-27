@@ -408,7 +408,7 @@ try:
 						
 		# In Production tab
 		with ui.tab_panel(two):
-			with ui.grid(columns=2).style("margin: auto"):		
+			with ui.row().style("margin: auto"):		
 				
 				# create the card for the first beer in production
 				with ui.card().style("margin: auto"):
@@ -436,15 +436,44 @@ try:
 						ui_ferm_chamber_2_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)	
 					ui_ferm_chamber_2_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
 
+			# Dummy data for Wort Specific Gravity
+			with ui.row().style("margin: auto"):	
+				# show fermentation chamber 1 SG
+				with ui.card():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Specific Gravity")
+					ui.label('CSS').style(CSS_LABEL).set_text("1.025")
+				
+				# show fermentation chamber 2 SG
+				with ui.card():				
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Specific Gravity")
+					ui.label('CSS').style(CSS_LABEL).set_text("1.055")
+
+			# Dummy data for Wort Temperature
+			with ui.row().style("margin: auto"):	
+				# show fermentation chamber 1 wort temperature
+				with ui.card():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Temperature")		
+					ui.label('CSS').style(CSS_LABEL).set_text("35.7 F")		
+				
+				# show fermentation chamber 2 wort temperature
+				with ui.card():
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Temperature")		
+					ui.label('CSS').style(CSS_LABEL).set_text("71.4 F")		
+
+			with ui.row().style("margin: auto"):	
 				# show fermentation chamber 1 temperature
 				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")	
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Chamber Temperature")	
 					ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)	
 				# show fermentation chamber 2 temperature
 				with ui.card():
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Temperature")		
+					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Chamber Temperature")		
 					ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)				
 						
 		tabs.set_value('On Tap')
