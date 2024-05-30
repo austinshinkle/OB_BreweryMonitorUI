@@ -13,7 +13,7 @@ import json
 DEBUG = 1
 
 # socket connection information
-server_ip = "ashinkl-rpi4"
+server_ip = "ashinkl-rpiz2w"
 server_port = 12345
 
 # styles for CSS formatting
@@ -79,39 +79,45 @@ def get_sensor_data():
 	
 	while not terminate_thread:
 		
-		# connect to the server which has the data
-		client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		client_socket.connect((server_ip,server_port))
-
-		# get the data from the socket
-		data = client_socket.recv(1024)
 		
-		if DEBUG > 0:
-			print("Received from server:", data.decode())
-		
-		# get sensor data from server
-		sensor_data = json.loads(data.decode())
-		
-		if DEBUG > 0:
-			print(sensor_data)
-		
-		# parse dictionary data
-		# dictionary elements: 
-			# FermentationChamberTemp1_F
-			# FermentationChamberTemp2_F
-			# KegeratorTemp_F
-			# KegWeightSensor1_PCT
-			# KegWeightSensor2_PCT
+		try:
+			# connect to the server which has the data
+			client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			client_socket.connect((server_ip,server_port))
 
-		keg_level_1 = sensor_data["KegWeightSensor1_PCT"]
-		keg_level_2 = sensor_data["KegWeightSensor2_PCT"]
-		fermentation_chamber_temp_1 = sensor_data["FermentationChamberTemp1_F"]
-		fermentation_chamber_temp_2 = sensor_data["FermentationChamberTemp2_F"]
-		kegerator_temp = sensor_data["KegeratorTemp_F"]
+			# get the data from the socket
+			data = client_socket.recv(1024)
+			
+			if DEBUG > 0:
+				print("Received from server:", data.decode())
+			
+			# get sensor data from server
+			sensor_data = json.loads(data.decode())
+			
+			if DEBUG > 0:
+				print(sensor_data)
+			
+			# parse dictionary data
+			# dictionary elements: 
+				# FermentationChamberTemp1_F
+				# FermentationChamberTemp2_F
+				# KegeratorTemp_F
+				# KegWeightSensor1_PCT
+				# KegWeightSensor2_PCT
 
-		client_socket.close()
+			keg_level_1 = sensor_data["KegWeightSensor1_PCT"]
+			keg_level_2 = sensor_data["KegWeightSensor2_PCT"]
+			fermentation_chamber_temp_1 = sensor_data["FermentationChamberTemp1_F"]
+			fermentation_chamber_temp_2 = sensor_data["FermentationChamberTemp2_F"]
+			kegerator_temp = sensor_data["KegeratorTemp_F"]
 
-		sleep(1)
+			client_socket.close()
+		
+		except ConnectionRefusedError:
+			print("Cannot connect to server...will try again later.")
+		
+		finally:
+			sleep(1)
 
 # function that queries Ostentatious Brewing on Wix for the current
 # items on tap and updates the NiceGui variables	
