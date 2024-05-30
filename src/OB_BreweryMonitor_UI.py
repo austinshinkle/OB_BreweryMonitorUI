@@ -174,7 +174,7 @@ def get_on_tap_info():
 	  "dataCollectionId": "BeerRecipes"
 	}
 	query_data_in_production = {
-	  "dataCollectionId": "BeerRecipesOnTap" # NEED TO CHANGE THIS API NAME!!!
+	  "dataCollectionId": "BeerRecipesInProduction" # NEED TO CHANGE THIS API NAME!!!
 	}
 
 	# define the header
@@ -272,7 +272,7 @@ def get_on_tap_info():
 				while num < element_count:
 					
 					#find information for Fermentation Chamber 1
-					if data['dataItems'][num]['data']['onTap'] == 'FermChamber1':
+					if data['dataItems'][num]['data']['recipeStatus'] == 'FermChamber1':
 
 						ferm_chamber_1_beer_name = data['dataItems'][num]['data']['title']            
 						ferm_chamber_1_expected_OG = data['dataItems'][num]['data']['targetOg']
@@ -286,7 +286,7 @@ def get_on_tap_info():
 						ferm_chamber_1_image_url = image_base_url + parts[3]
 						
 					#find information for Fermentation Chamber 2
-					if data['dataItems'][num]['data']['onTap'] == 'FermChamber2':
+					if data['dataItems'][num]['data']['recipeStatus'] == 'FermChamber2':
 
 						ferm_chamber_2_beer_name = data['dataItems'][num]['data']['title']            
 						ferm_chamber_2_expected_OG = data['dataItems'][num]['data']['targetOg']
