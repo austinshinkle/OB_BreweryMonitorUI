@@ -14,8 +14,10 @@ The application will show static information collected from the Ostentatious Bre
 
 ### Data Interface
 The data interface between OB_BreweryMonitor and OB_BreweryMonitorUI are supplied in a data dictionary with key as follows:
-```FermentationChamberTemp1_F
+```
+FermentationChamberTemp1_F
 FermentationChamberTemp2_F
 KegeratorTemp_F
 KegWeightSensor1_PCT
-KegWeightSensor2_PCT```
+KegWeightSensor2_PCT
+```
