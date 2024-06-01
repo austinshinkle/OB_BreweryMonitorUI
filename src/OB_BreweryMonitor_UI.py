@@ -174,7 +174,7 @@ def get_on_tap_info():
 	  "dataCollectionId": "BeerRecipes"
 	}
 	query_data_in_production = {
-	  "dataCollectionId": "BeerRecipesInProduction" # NEED TO CHANGE THIS API NAME!!!
+	  "dataCollectionId": "BeerRecipesInProduction" 
 	}
 
 	# define the header
@@ -212,7 +212,7 @@ def get_on_tap_info():
 				while num < element_count:
 					
 					#find information for Tap 1
-					if data['dataItems'][num]['data']['onTap'] == 'OnTap_Tap1':
+					if data['dataItems'][num]['data']['beerStatus'] == 'OnTap_Tap1':
 
 						tap1_beer_name = data['dataItems'][num]['data']['title']            
 						tap1_abv = data['dataItems'][num]['data']['actualAbv']
@@ -226,7 +226,7 @@ def get_on_tap_info():
 						tap1_image_url = image_base_url + parts[3]
 						
 					#find information for Tap 2	Connecting to Ostentatious Brewing: Getting In Production Data...
-					if data['dataItems'][num]['data']['onTap'] == 'OnTap_Tap2':
+					if data['dataItems'][num]['data']['beerStatus'] == 'OnTap_Tap2':
 
 						#find information for Tap 2
 						tap2_beer_name = data['dataItems'][num]['data']['title']            
@@ -414,74 +414,79 @@ try:
 						
 		# In Production tab
 		with ui.tab_panel(two):
-			with ui.row().style("margin: auto"):		
+			
+			with ui.row().style("margin: auto"):
 				
 				# create the card for the first beer in production
 				with ui.card().style("margin: auto"):
 					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")
-					# add the beer image and style
-					ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
-					ui_ferm_chamber_1_image = ui.image(ferm_chamber_1_image_url).style("margin: auto; width: 300px;")
-					
-					# show gravity numbers
-					with ui.grid(columns=2).style("margin: auto"):
-						ui_ferm_chamber_1_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
-						ui_ferm_chamber_1_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)
-					ui_ferm_chamber_1_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
 				
-				# create the card for the second beer in production	
-				with ui.card().style("margin: auto"):
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")
-					# add the beer image and style
-					ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
-					ui_ferm_chamber_2_image = ui.image(ferm_chamber_2_image_url).style("margin: auto; width: 300px;")
-					
-					# show gravity numbers
-					with ui.grid(columns=2).style("margin: auto"):
-						ui_ferm_chamber_2_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
-						ui_ferm_chamber_2_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)	
-					ui_ferm_chamber_2_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
-
-			# Dummy data for Wort Specific Gravity
-			with ui.row().style("margin: auto"):	
-				# show fermentation chamber 1 SG
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Specific Gravity")
-					ui.label('CSS').style(CSS_LABEL).set_text("1.025")
-				
-				# show fermentation chamber 2 SG
-				with ui.card():				
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Specific Gravity")
-					ui.label('CSS').style(CSS_LABEL).set_text("1.055")
-
-			# Dummy data for Wort Temperature
-			with ui.row().style("margin: auto"):	
-				# show fermentation chamber 1 wort temperature
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Temperature")		
-					ui.label('CSS').style(CSS_LABEL).set_text("35.7 F")		
-				
-				# show fermentation chamber 2 wort temperature
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Wort Temperature")		
-					ui.label('CSS').style(CSS_LABEL).set_text("71.4 F")		
-
-			with ui.row().style("margin: auto"):	
-				# show fermentation chamber 1 temperature
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 1")	
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Chamber Temperature")	
-					ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)	
-				# show fermentation chamber 2 temperature
-				with ui.card():
-					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")				
-					ui.label('CSS').style(CSS_LABEL_SMALL).set_text("Chamber Temperature")		
-					ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)				
+					# create the card for the name and image
+					with ui.card().style("margin: auto"):
+						# add the beer image and style
+						ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_ferm_chamber_1_image = ui.image(ferm_chamber_1_image_url).style("margin: auto; width: 300px;")
 						
+						# show beer statistics						
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Beer Statistics")
+
+						with ui.grid(columns=2).style("margin: auto"):
+							ui_ferm_chamber_1_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+							ui_ferm_chamber_1_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_ferm_chamber_1_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+						
+					# Dummy data for Wort Specific Gravity
+					# show wort specific gravity
+					with ui.card().style("margin: auto"):
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Wort Specific Gravity")
+						ui.label('CSS').style(CSS_LABEL).set_text("1.025")
+						
+					# Dummy data for Wort Temperature
+					# show wort temperature
+					with ui.card().style("margin: auto"):
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Wort Temperature")		
+						ui.label('CSS').style(CSS_LABEL).set_text("35.7 F")	
+						
+					# show fermentation chamber 1 temperature
+					with ui.card().style("margin: auto"):
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Chamber Temperature")	
+						ui_ferm_chamber_temp_1 = ui.label('CSS').style(CSS_LABEL)		
+				
+				# create the card for the second beer in production
+				with ui.card().style("margin: auto"):			
+					ui.label('CSS').style(CSS_HEADING_H2).set_text("Fermentation Chamber 2")
+							
+					# create the card for the second beer in production	
+					with ui.card().style("margin: auto"):
+						# add the beer image and style
+						ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_ferm_chamber_2_image = ui.image(ferm_chamber_2_image_url).style("margin: auto; width: 300px;")
+						
+						# show beer statistics
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Beer Statistics")
+
+						with ui.grid(columns=2).style("margin: auto"):
+							ui_ferm_chamber_2_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+							ui_ferm_chamber_2_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)	
+						ui_ferm_chamber_2_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+					
+					# Dummy data for Wort Specific Gravity
+					# show wort specific gravity
+					with ui.card().style("margin: auto"):				
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Wort Specific Gravity")
+						ui.label('CSS').style(CSS_LABEL).set_text("1.055")
+	
+					# Dummy data for Wort Temperature
+					# show wort temperature
+					with ui.card().style("margin: auto"):	
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Wort Temperature")		
+						ui.label('CSS').style(CSS_LABEL).set_text("71.4 F")		
+
+					# show fermentation chamber 2 temperature
+					with ui.card().style("margin: auto"):			
+						ui.label('CSS').style(CSS_HEADING_H3).set_text("Chamber Temperature")		
+						ui_ferm_chamber_temp_2 = ui.label('CSS').style(CSS_LABEL)				
+							
 		tabs.set_value('On Tap')
 	
 	# update UI elements on timers
@@ -502,7 +507,7 @@ try:
 	input("Press Enter to stop the program..\n")
 	terminate_thread = True
 	
-	# wait for the measure keg thread to complete
+	# wait for the get sensor data thread to complete
 	# note: terminate other threads immediately
 	thread_get_sensor_data.join()
 
