@@ -432,8 +432,8 @@ try:
 
 						with ui.grid(columns=2).style("margin: auto"):
 							ui_ferm_chamber_1_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
-							ui_ferm_chamber_1_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)
-						ui_ferm_chamber_1_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+							ui_ferm_chamber_1_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_ferm_chamber_1_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)
 						
 					# Dummy data for Wort Specific Gravity
 					# show wort specific gravity
@@ -467,8 +467,8 @@ try:
 
 						with ui.grid(columns=2).style("margin: auto"):
 							ui_ferm_chamber_2_expected_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
-							ui_ferm_chamber_2_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)	
-						ui_ferm_chamber_2_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+							ui_ferm_chamber_2_actual_OG = ui.label('CSS').style(CSS_LABEL_SMALL)
+						ui_ferm_chamber_2_expected_FG = ui.label('CSS').style(CSS_LABEL_SMALL)	
 					
 					# Dummy data for Wort Specific Gravity
 					# show wort specific gravity
