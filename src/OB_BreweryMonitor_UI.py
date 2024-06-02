@@ -53,6 +53,7 @@ tap2_style = ''
 # In Production - Fermentation Chamber 1
 ferm_chamber_1_beer_name = ''
 ferm_chamber_1_image_url = ''
+ferm_chamber_1_style = ''
 ferm_chamber_1_expected_OG = ''
 ferm_chamber_1_actual_OG = ''
 ferm_chamber_1_expected_FG = ''
@@ -60,6 +61,7 @@ ferm_chamber_1_expected_FG = ''
 # In Production - Fermentation Chamber 2
 ferm_chamber_2_beer_name = ''
 ferm_chamber_2_image_url = ''
+ferm_chamber_2_style = ''
 ferm_chamber_2_expected_OG = ''
 ferm_chamber_2_actual_OG = ''
 ferm_chamber_2_expected_FG = ''
@@ -141,11 +143,13 @@ def get_on_tap_info():
 	# variable for In Production info
 	global ferm_chamber_1_beer_name
 	global ferm_chamber_1_image_url
+	global ferm_chamber_1_style
 	global ferm_chamber_1_expected_OG
 	global ferm_chamber_1_actual_OG
 	global ferm_chamber_1_expected_FG
 	global ferm_chamber_2_beer_name
 	global ferm_chamber_2_image_url
+	global ferm_chamber_2_style
 	global ferm_chamber_2_expected_OG
 	global ferm_chamber_2_actual_OG
 	global ferm_chamber_2_expected_FG
@@ -278,6 +282,7 @@ def get_on_tap_info():
 						ferm_chamber_1_expected_OG = data['dataItems'][num]['data']['targetOg']
 						ferm_chamber_1_actual_OG = data['dataItems'][num]['data']['actualOg']
 						ferm_chamber_1_expected_FG = data['dataItems'][num]['data']['targetFg']
+						ferm_chamber_1_style = data['dataItems'][num]['data']['style']
 						#ferm_chamber_1_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
 
 						
@@ -292,6 +297,7 @@ def get_on_tap_info():
 						ferm_chamber_2_expected_OG = data['dataItems'][num]['data']['targetOg']
 						ferm_chamber_2_actual_OG = data['dataItems'][num]['data']['actualOg']
 						ferm_chamber_2_expected_FG = data['dataItems'][num]['data']['targetFg']
+						ferm_chamber_2_style = data['dataItems'][num]['data']['style']
 						#ferm_chamber_2_page_url = website_base_url + data['dataItems'][num]['data']['link-beer-recipes-title']
 
 						
@@ -338,7 +344,8 @@ def update_ui():
 	ui_ferm_chamber_1_image.set_source(ferm_chamber_1_image_url)
 	ui_ferm_chamber_1_expected_OG.set_text(f"Expected OG: {ferm_chamber_1_expected_OG}")
 	ui_ferm_chamber_1_expected_FG.set_text(f"Expected FG: {ferm_chamber_1_expected_FG}")
-	ui_ferm_chamber_1_actual_OG.set_text(f"Actual OG: {ferm_chamber_1_actual_OG}")
+	ui_ferm_chamber_1_actual_OG.set_text(f"Actual OG: {ferm_chamber_1_actual_OG}")	
+	ui_ferm_chamber_1_style.set_text(ferm_chamber_1_style)
 	
 	# In Prod - Fermentation Chamber 2
 	ui_ferm_chamber_2_beer_name.set_text(ferm_chamber_2_beer_name)
@@ -346,6 +353,7 @@ def update_ui():
 	ui_ferm_chamber_2_expected_OG.set_text(f"Expected OG: {ferm_chamber_2_expected_OG}")
 	ui_ferm_chamber_2_expected_FG.set_text(f"Expected FG: {ferm_chamber_2_expected_FG}")
 	ui_ferm_chamber_2_actual_OG.set_text(f"Actual OG: {ferm_chamber_2_actual_OG}")
+	ui_ferm_chamber_2_style.set_text(ferm_chamber_2_style)
 
 	
 # main program
@@ -426,6 +434,7 @@ try:
 						# add the beer image and style
 						ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
 						ui_ferm_chamber_1_image = ui.image(ferm_chamber_1_image_url).style("margin: auto; width: 300px;")
+						ui_ferm_chamber_1_style = ui.label('CSS').style(CSS_HEADING_H3)	
 						
 						# show beer statistics						
 						ui.label('CSS').style(CSS_HEADING_H3).set_text("Beer Statistics")
@@ -461,6 +470,7 @@ try:
 						# add the beer image and style
 						ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
 						ui_ferm_chamber_2_image = ui.image(ferm_chamber_2_image_url).style("margin: auto; width: 300px;")
+						ui_ferm_chamber_2_style = ui.label('CSS').style(CSS_HEADING_H3)	
 						
 						# show beer statistics
 						ui.label('CSS').style(CSS_HEADING_H3).set_text("Beer Statistics")
