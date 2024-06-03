@@ -389,7 +389,7 @@ try:
 						ui_tap1_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						with ui.link(target=tap1_page_url, new_tab=True).style("margin: auto"):
 							ui_tap1_image = ui.image(tap1_image_url).style("width: 300px;")
-						ui_tap1_style = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_tap1_style = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						
 						# show beer statistics
 						with ui.grid(columns=2).style("margin: auto"):
@@ -406,7 +406,7 @@ try:
 						ui_tap2_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						with ui.link(tap2_page_url, new_tab=True).style("margin: auto"): 
 							ui_tap2_image = ui.image(tap2_image_url).style("width: 300px;")
-						ui_tap2_style = ui.label('CSS').style(CSS_HEADING_H3)
+						ui_tap2_style = ui.label('CSS').style(CSS_HEADING_H3_BOLD)
 						
 						# show beer statistics
 						with ui.grid(columns=2).style("margin: auto"):
@@ -435,7 +435,7 @@ try:
 						# add the beer image and style
 						ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						ui_ferm_chamber_1_image = ui.image(ferm_chamber_1_image_url).style("margin: auto; width: 300px;")
-						ui_ferm_chamber_1_style = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_ferm_chamber_1_style = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						
 						# show beer statistics						
 						ui.label('CSS').style(CSS_HEADING_H3).set_text("Beer Statistics")
@@ -471,7 +471,7 @@ try:
 						# add the beer image and style
 						ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						ui_ferm_chamber_2_image = ui.image(ferm_chamber_2_image_url).style("margin: auto; width: 300px;")
-						ui_ferm_chamber_2_style = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_ferm_chamber_2_style = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						
 						# show beer statistics
 						ui.label('CSS').style(CSS_HEADING_H3).set_text("Beer Statistics")
