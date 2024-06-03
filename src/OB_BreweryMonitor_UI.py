@@ -20,6 +20,7 @@ server_port = 12345
 CSS_HEADING_H1 = 'margin: auto; padding: 0px; text-align: center; color: #111111; font-variant: small-caps; font-size: xxx-large; font-weight: 500; font-family: Optima, sans-serif'
 CSS_HEADING_H2 = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: xx-large; font-weight: 500; font-family: Optima, sans-serif'
 CSS_HEADING_H3 = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: x-large; font-weight: 500; font-family: Optima, sans-serif'
+CSS_HEADING_H3_BOLD = 'margin: auto; padding: 0px; color: #222222; font-variant: small-caps; font-size: x-large; font-weight: 600; font-family: Optima, sans-serif'
 CSS_LABEL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: x-large; font-family: Optima, sans-serif'
 CSS_LABEL_SMALL = 'margin: auto; color: #333333; font-variant: small-caps; font-size: medium; font-family: Optima, sans-serif'
 
@@ -385,7 +386,7 @@ try:
 					with ui.card().style("margin: auto"):
 						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 1")
 						# add the beer image and style
-						ui_tap1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_tap1_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						with ui.link(target=tap1_page_url, new_tab=True).style("margin: auto"):
 							ui_tap1_image = ui.image(tap1_image_url).style("width: 300px;")
 						ui_tap1_style = ui.label('CSS').style(CSS_HEADING_H3)	
@@ -402,7 +403,7 @@ try:
 					with ui.card().style("margin: auto"):
 						ui.label('CSS').style(CSS_HEADING_H2).set_text("Tap 2")		
 						# add the beer image and style
-						ui_tap2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_tap2_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						with ui.link(tap2_page_url, new_tab=True).style("margin: auto"): 
 							ui_tap2_image = ui.image(tap2_image_url).style("width: 300px;")
 						ui_tap2_style = ui.label('CSS').style(CSS_HEADING_H3)
@@ -432,7 +433,7 @@ try:
 					# create the card for the name and image
 					with ui.card().style("margin: auto"):
 						# add the beer image and style
-						ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_ferm_chamber_1_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						ui_ferm_chamber_1_image = ui.image(ferm_chamber_1_image_url).style("margin: auto; width: 300px;")
 						ui_ferm_chamber_1_style = ui.label('CSS').style(CSS_HEADING_H3)	
 						
@@ -468,7 +469,7 @@ try:
 					# create the card for the second beer in production	
 					with ui.card().style("margin: auto"):
 						# add the beer image and style
-						ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3)	
+						ui_ferm_chamber_2_beer_name = ui.label('CSS').style(CSS_HEADING_H3_BOLD)	
 						ui_ferm_chamber_2_image = ui.image(ferm_chamber_2_image_url).style("margin: auto; width: 300px;")
 						ui_ferm_chamber_2_style = ui.label('CSS').style(CSS_HEADING_H3)	
 						
