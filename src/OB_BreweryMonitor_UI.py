@@ -512,7 +512,7 @@ try:
 
 
 	# run the UI   192.168.178.74
-	ui.run(reload=False, native=False, title='Ostentatious Brewing', favicon=FAVICON, host='192.168.178.74')
+	ui.run(reload=False, native=False, title='Ostentatious Brewing', favicon=FAVICON, host='192.168.178.26')
 	
 	# Wait for keyboard input to terminate the thread
 	input("Press Enter to stop the program..\n")
